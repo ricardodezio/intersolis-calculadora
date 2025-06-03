@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Fotovoltaica - Intersolis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+    }
+    header img {
+      height: 40px;
+      margin-right: 15px;
+    }
+    main {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    footer {
+      position: fixed;
+      right: 10px;
+      bottom: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+    footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="intersolis.png" alt="Logo Intersolis">
+    <h1>Intersolis - Calculadora Fotovoltaica</h1>
+  </header>
+  <main>
+    <label for="consumo">Consumo mensal (kWh):</label>
+    <input type="number" id="consumo" placeholder="Ex: 450">
+
+    <label for="estado">Selecione o Estado:</label>
+    <select id="estado">
+      <option value="">-- Selecione --</option>
+    </select>
+
+    <button onclick="calcularPlacas()">Calcular</button>
+
+    <div id="resultado"></div>
+  </main>
+  <footer>
+    desenvolvido por <a href="https://www.linkedin.com/in/ricardo-souza-734668162/" target="_blank">Ricardo Dezio</a>
+  </footer>
+
+  <script>
+    const irradiacoes = {
+      "Acre": 5.3,
+      "Amapá": 5.2,
+      "Amazonas": 4.5,
+      "Pará": 5.0,
+      "Rondônia": 5.3,
+      "Roraima": 5.6,
+      "Tocantins": 5.5,
+      "Alagoas": 5.4,
+      "Bahia": 5.8,
+      "Ceará": 5.7,
+      "Maranhão": 5.5,
+      "Paraíba": 5.6,
+      "Pernambuco": 5.6,
+      "Piauí": 5.9,
+      "Rio Grande do Norte": 5.7,
+      "Sergipe": 5.5,
+      "Distrito Federal": 5.6,
+      "Goiás": 5.6,
+      "Mato Grosso": 5.7,
+      "Mato Grosso do Sul": 5.5,
+      "Espírito Santo": 5.1,
+      "Minas Gerais": 5.7,
+      "Rio de Janeiro": 5.3,
+      "São Paulo": 5.1,
+      "Paraná": 4.8,
+      "Rio Grande do Sul": 4.5,
+      "Santa Catarina": 4.6
+    };
+
+    const estadoSelect = document.getElementById("estado");
+    for (let estado in irradiacoes) {
+      const option = document.createElement("option");
+      option.value = estado;
+      option.textContent = estado;
+      estadoSelect.appendChild(option);
+    }
+
+    function calcularPlacas() {
+      const consumo = parseFloat(document.getElementById("consumo").value);
+      const estado = document.getElementById("estado").value;
+
+      if (!consumo || !estado) {
+        alert("Preencha o consumo e selecione um estado.");
+        return;
+      }
+
+      const irradiacao = irradiacoes[estado];
+      const eficienciaSistema = 0.8;
+      const energiaGeradaPorPlaca = 0.610 * irradiacao * 30 * eficienciaSistema;
+      const placasNecessarias = Math.ceil(consumo / energiaGeradaPorPlaca);
+
+      document.getElementById("resultado").innerText = `Você precisará de aproximadamente ${placasNecessarias} placas solares de 610W.`;
+    }
+  </script>
+</body>
+</html>
